@@ -1,0 +1,104 @@
+-- 
+-- Database: `basted`
+-- 
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `communications`
+-- 
+
+CREATE TABLE `communications` (
+  `id` int(11) NOT NULL auto_increment,
+  `mboxid` int(11) NOT NULL default '0',
+  `subject` text NOT NULL,
+  `parentid` int(11) NOT NULL default '0',
+  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `status` enum('Initial Notification','Followup','Solved') NOT NULL default 'Initial Notification',
+  `body` blob NOT NULL,
+  `mailto` varchar(255) NOT NULL default '',
+  `whois` blob NOT NULL,
+  `mailfrom` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB COMMENT='Abuse Reports and mail followup table.';
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `configuration`
+-- 
+
+CREATE TABLE `configuration` (
+  `id` int(11) NOT NULL auto_increment,
+  `profile` varchar(40) NOT NULL default '',
+  `botinfo` enum('Yes','No') NOT NULL default 'No',
+  `botmsg` blob NOT NULL,
+  `spammsg` blob NOT NULL,
+  `fqdn` varchar(255) NOT NULL default '',
+  `realuser` varchar(255) NOT NULL default '',
+  `fromname` varchar(255) NOT NULL default '',
+  `frommail` varchar(255) NOT NULL default '',
+  `organization` varchar(255) NOT NULL default '',
+  `botreport` enum('Yes','No') NOT NULL default 'No',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB COMMENT='Configuration Table (future use)';
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `contacts`
+-- 
+
+CREATE TABLE `contacts` (
+  `id` int(11) NOT NULL auto_increment,
+  `email` varchar(255) NOT NULL default '',
+  `coinfo` text NOT NULL,
+  `whois` blob NOT NULL,
+  `parentid` int(11) NOT NULL default '0',
+  `orgname` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB COMMENT='Contacts table (emails, company info etc)';
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `generated`
+-- 
+
+CREATE TABLE `generated` (
+  `id` int(11) NOT NULL auto_increment,
+  `ip` int(11) NOT NULL default '-1',
+  `port` int(5) NOT NULL default '0',
+  `agent` varchar(255) NOT NULL default '',
+  `referer` text NOT NULL,
+  `genmail` varchar(250) NOT NULL default '',
+  `gentime` datetime NOT NULL default '0000-00-00 00:00:00',
+  `alias` varchar(255) NOT NULL default 'basted',
+  `alias_status` enum('Active','Inactive','Spammed') NOT NULL default 'Active',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `genmail` (`genmail`),
+  KEY `genmail_2` (`genmail`)
+) ENGINE=InnoDB COMMENT='Generated trap addresses table';
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `mailbox`
+-- 
+
+CREATE TABLE `mailbox` (
+  `id` int(11) NOT NULL auto_increment,
+  `sender` varchar(250) NOT NULL default '',
+  `receipient` varchar(250) NOT NULL default '',
+  `delivered` varchar(255) NOT NULL default '',
+  `subject` varchar(250) NOT NULL default '',
+  `headers` text NOT NULL,
+  `content` blob NOT NULL,
+  `date` datetime NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`id`),
+  KEY `sender` (`sender`),
+  KEY `receipient` (`receipient`),
+  KEY `subject` (`subject`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB COMMENT='Received mail';

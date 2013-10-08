@@ -1,0 +1,36 @@
+BODY {  SCROLLBAR-FACE-COLOR: #BAC0C8;
+        SCROLLBAR-HIGHLIGHT-COLOR: #F7F7F7;
+        SCROLLBAR-SHADOW-COLOR: #F7F7F7; 
+        SCROLLBAR-3DLIGHT-COLOR: #FFFFFF;
+        SCROLLBAR-ARROW-COLOR:  #ffffff; 
+        SCROLLBAR-TRACK-COLOR: #E5EAEF;
+        SCROLLBAR-DARKSHADOW-COLOR: #F7F7F7; }
+
+body {
+        background-color: #FFFFFF;
+        margin-top: 0px;
+}
+
+a {
+        color:DarkSlateBlue ;
+        font-weight: bold;
+}
+
+a:link {
+            text-decoration: none;
+}
+a:visited {
+            text-decoration: none;
+}
+
+a:hover {
+            text-decoration: underline;
+
+}
+a:active {
+            text-decoration: none;
+}
+
+a.navig:link {font-family: Verdana; font-size: 11px; color: Black}
+a.navig:visited {font-family: Verdana; font-size: 11px; color: Black}
+a.navig:hover {text-decoration: underline}

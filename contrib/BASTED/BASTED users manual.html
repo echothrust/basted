@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>BASTED users manual.html</title>
+  <link href="style.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <div>
+   <h1>BASTED Users Manual</h1>
+   <p>18 August, 2004</p>
+   <p></p>
+   <ol>
+    <li class="Numbered_Heading_1" style="text-align: justify">Introduction</li>
+   <p style="text-align: justify">Since the first appearance of spam people always tried to find a way to fight those filthy spammers. Signature based spam filters, Bayesian filters, black lists, white lists and all sorts of things made the whole SMTP hosting ending up costing more money than it should. Most of those solutions are fine, nobody argues that, but they tent to be inadequate to handle the extremely fast growth and cleverness of some of those filthy spammers. Most of the times its required extremely high technical knowledge, other times the complexity kills the usability of this protocol. Knowing this in its easy to see why is there very few networks that have actually implemented a protection like those.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">These problems couldn't let us (team r00thell) untouched. Although we find some of the simplest forms of protections to be the correct configuration and strict RFC compliance of our SMTP server, we just couldn't stand and watch all those bastard spammers polluting the Internet and the mailboxes of millions of users. What we realized is that there is a lack of actual and deep knowledge that is involved in the spam process. </p>
+    <li class="Numbered_Heading_1"><span style="lang: en-US">	</span>Failed attempts</li>
+   <p style="text-align: justify">So we started thinking of how one could possibly harm those pigs. Some of the ideas we came up with were truly effective but required that you either brake the law or having very high and specific skillet meaning that those solutions were not meant for the common user/administrator. Others required that you will start polluting too and the effectiveness of those solutions was questionable. We will list some of those solutions we came up in and explaining how we end up on creating BASTED.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">One of the ideas was to start monitor for spammer activity and once we discovered one start hacking his ass off. Although this seemed to be effective in its own strange way it was hard to find supporters who would risk their freedom for a bunch of spammers. Its worth saying that in our testing period of this project we ended up hacking at least 5-10 spammers and its also worth mentioning that at least in 3 of those cases the spammers got their selves in really deep shit. One of them had given his credit card on a VoIP like company... In the first 5 minutes of publishing the details of this particular spammer more than $500 were billed into his credit card. Effective maybe, fun hell yeah, dangerous sure thing but...</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">But like all the nice things this wasn't meant to last, so we turned into other solutions. One of those was a distributed spam/DDoS system. The moment you receive a spam a central system gets notified, the spammer details get filtered verified and then his IP or email address is given to clients. Users start sending their spam/flood whatever until the spammer dies. Users who manage to flood/spam the most got extra points sort of like the Distributed.Net works but instead of trying to crack a key, you break the balls of spammers. After careful examination of this idea we realized that there is no actual way to verify the sayings of clients. This means that if i had something against a particular user i could fake a request and then the pure bastard would end up be flooded by hundreds of spam hater administrators all over the world. Defenantly NOT our way of working. So as you might imagine this idea didn't go far, not even from design to implementation. It ended being just a stupid idea ;-)</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">So after a lot of thinking we realised that we dont actualy know much about how the spammers work, where the hell do they find addresses? I mean yeah they do brute force accounts but this is only for simple ones, of the form (joe, marry, info, admin, postmaster, webmaster etc..). </p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">Another thing that we didnt know is how long does it take to be spammed. Having all this in our minds we came to the conclusion that primary source of spammers addresses are bots that crawl sites, Google is also a good source. The whole thing ended up in the following:</p>
+   <p style="text-align: justify"></p>
+   <ol>
+    <li class="Numbered_List" style="text-align: justify">Be able to recognize that a mail is spam.</li>
+    <li class="Numbered_List" style="text-align: justify">Be able to relate a given spam with a particular visitor.</li>
+    <li class="Numbered_List" style="text-align: justify">Be able to block further spam from this bitch.</li>
+   </ol>
+   <p class="Numbered_List" style="text-align: justify; margin-left: 0pt; text-indent: 0in"></p>
+   <p class="Numbered_List" style="text-align: justify; margin-left: 0pt; text-indent: 0in"><span style="lang: en-US; font-size: 12pt">And BASTED was born.</span></p>
+    <li class="Numbered_Heading_1" style="text-align: justify"><span style="lang: en-US">	</span>What is Basted anyways?</li>
+   <p style="text-align: justify">First let us tell you what BASTED is not. BASTED is NOT a spam filter, BASTED cant clean your mailbox from spam neither can protect you from receiving it without YOU taking some actions.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">Basted can be described in the simplest form as a spam honeypot. With the ability to give you details about a spam and the user who sent it, giving you a bigger image on how this address ended up in the spammers hands and so on.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">BASTED architecture is as simple as it gets. Knowing that this is some sort of honeypot its easy to imagine the concept behind it. Everything that reaches in is spam since there shouldn't be any communications involved.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">In general all that BASTED does is to give you a better idea on how the spammers work, who and how this spammer works, allow you to fill abuse reports and keep track of whats going on.</p>
+    <li class="Numbered_Heading_1"><span style="lang: en-US">	</span>How it works</li>
+   <p style="text-align: justify">So how this thing works? What is this thing does and what will offer you? Those and many more questions you might have will hopefully answered here. </p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">In order to use BASTED you need either a dedicated VHOST for your honeypot or insert the code required in your existing PHP (the latest is not suggested). </p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">When a someone visits the "trap" a unique email address is generated and stored in the database along with the visitors details. IP, port, referrer and all the rest of the useful headers of the visitors request. Also a mail alias is created for the postfix alias table.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">When you receive a mail on any generated address the address status changes into spammed and you can now know who was responsible for this spam.  </p>
+    <li class="Numbered_Heading_1"><span style="lang: en-US">	</span>How to use BASTED</li>
+   <p style="text-align: justify">And after all the rambling its now time to see how you can use BASTED. This is the section where you learn how to do that.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">If you carefully followed the instructions from the INSTALL files then you already have a small idea on how to use BASTED. Although some of the BASTED functions are still unknown to you. </p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">So here it goes the first thing you'll see when you visit your administration interface is a screen like the following.</p>
+   <p style="text-align: center"><img width="50%" src="home_0.png"></p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">Each section has its own explanation (yeah yeah i know we lack good documentation but if &nbsp;you don't like it you can write one and sent it over).</p>
+   <p style="text-align: justify">Now in order to show you all the aspects of BASTED you'll have to play the spammer for a little bit. Yeah i know its disgusting idea but if you want to see how BASTED works then you'll have to do it.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">Open another browser and visit the trap folder. Its in your BASTED distribution. Click on any of the two PHP files there (remember those are just examples). When you finish visiting the trap close the browser and go back to the administration interface. Click on <span style="font-weight: bold">TRAPS </span>you should see something like the next screenshot.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: center"><img width="50%" src="traps_1.png"></p>
+   <p style="text-align: justify">The <span style="font-weight: bold">Mbox Addr</span>, <span style="font-weight: bold">Mbox Creation</span> and <span style="font-weight: bold">SpamBot IP </span>will be different than the one shown here of course. The fields are self explanatory. Sent a mail to this address, its better if you do so from outside the current machine cause we need to have IP addresses of mailservers involved in order to show you some of the features. If you sent it from local system there might be no IP.  After you finish mailing this trap the <span style="font-weight: bold">Trap status</span> will be changed from <span style="font-weight: bold">Active</span> to <span style="font-weight: bold">Spammed.</span> Based on your configuration this address might or may not receive any further spam. </p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">Now click on the <span style="font-weight: bold">SPAM</span> link in the top right corner and you should see something like this.</p>
+   <p style="text-align: center"><img width="50%" src="spam_0.png"></p>
+   <p style="text-align: justify">In this form also the fields are self explanatory except the last two of them. <span style="font-weight: bold">Status</span> is either <span style="font-weight: bold">Spam</span> or <span style="font-weight: bold">Direct</span> if a mail does not have a corresponding generated <span style="font-weight: bold">TRAP</span> is considered <span style="font-weight: bold">Direct</span> if it does then its <span style="font-weight: bold">Spam</span>. The field <span style="font-weight: bold">Report</span> will show you a counter on how many times you reported this spam and if you want to see more details hit the <span style="font-weight: bold">Details</span>.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">When you hit the details the screen will look like this</p>
+   <p style="text-align: center"><img width="50%" src="details_0.png"></p>
+   <p style="text-align: justify">All the fields are self explanatory except two small details, the first is the <span style="font-weight: bold">Category</span> drop down menu and the other is the link inside the <span style="font-weight: bold">Headers</span> link saying <span style="font-style: italic">Report abuse on X.X.X.X.</span> </p>
+   <p style="text-align: justify">The <span style="font-weight: bold">Category </span>field is used in case this isnt a spam but rather a normal mail. If its not a spam select <span style="font-weight: bold">Followup</span> from the drop down menu and hit update. This will take you to the communications screen that we will describe in a bit. Now to the links, well this is where you have to decide where the spam came from. First versions of BASTED did that automatically but that left very large space for false positives and we don't want that so now you have to put your brainstorming hat and decide where to sent this abuse report. Click on any of those IP addresses, this will take you to the fill abuse screen like the one below.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: center"><img width="50%" src="fillabuse_0.png"></p>
+   <p style="text-align: justify">The <span style="font-weight: bold">Mail From</span> field is read only and cannot be changed, the value shown there is the value you put in the <span style="font-weight: bold; font-style: italic">config.php </span>script. Since this is our first abuse report we dont want to sent it to the real owners (we're just testing remember?). So before you move any further change the <span style="font-weight: bold">Mail To</span> fields and place there your own email address. On your right you can see the whois data. This data is there for you to verify that BASTED grabed the correct email addresses to sent the abuse report. Please <span style="font-weight: bold">DO NOT</span> rely on BASTED and always VERIFY that the address found in the <span style="font-weight: bold">Mail To</span> field is the one that the abuse report should actually go.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">After you're sure everything is alright hit send and go check your mailbox. Hit reply on the mail you just received and put as <span style="font-weight: bold">To</span> address the address of BASTED real account. Return to your BASTED administration interface and click on <span style="font-weight: bold">SPAM</span> again. You should see your reply there, click on details, from the next screen choose <span style="font-weight: bold">Followup</span> from the drop down menu of <span style="font-weight: bold">Category</span> and hit update.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">This will take you to the <span style="font-weight: bold">Communications</span> section. You should see now two two records showing there. One with status <span style="font-weight: bold">Initial Notification</span>, (this is the report we sent) and one with status <span style="font-weight: bold">Followup</span> this is the reply you just did. Click on the link of <span style="font-weight: bold">Followup</span>. You should see something like this</p>
+   <p style="text-align: center"><img width="50%" src="mdetails_0.png"></p>
+   <p style="text-align: justify">The field <span style="font-weight: bold">Status</span> has three options, <span style="font-weight: bold">Initial Notification</span>,<span style="font-weight: bold"> Followup </span>and<span style="font-weight: bold"> Solved</span>. As you can tell this is the status of the abuse report, it allows you to have followups and solved in order to organize them the way you like.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">The field <span style="font-weight: bold">Parent</span> has a list of all <span style="font-weight: bold">Communications</span> with status <span style="font-weight: bold">Initial Notification</span> and this allows you to associate communications with abuse reports you've done.</p>
+   <p style="text-align: justify"></p>
+   <p style="text-align: justify">And final the field <span style="font-weight: bold">Actions</span> which allows you to <span style="font-weight: bold">Delete</span> the current record or in case of a record which is of status <span style="font-weight: bold">Initial Notification</span> and has followup mails to <span style="font-weight: bold">Delete All</span> of them. </p>
+   <p style="text-align: justify"></p>
+    <li class="Numbered_Heading_1"><span style="lang: en-US">	</span>The End</li>
+   <p>If you manage to read this far then we admire your courage, but besides that you are now familiar with almost all aspects of BASTED. We suggest you play a bit more before you actually deploy BASTED on a production system. If you have any questions or problems regarding BASTED please don't hesitate to contact us, we will be more than happy to answer your questions (<span style="font-weight: bold">IF</span> we know the answers heheh).</p>
+</ol>
+  </div>
+ </body>
+</html>

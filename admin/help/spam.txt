@@ -1,0 +1,7 @@
+
+This option allows you to see current messages received. Please note
+that there is no seperation between Legit and Spam mail as far as BASTED
+care, both are listed there. From here you can see mail details, see the
+bot (user ip) that created the "spam trap" and if you're not lazy like
+me report them :-)
+
