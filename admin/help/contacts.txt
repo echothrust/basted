@@ -1,0 +1,6 @@
+The Contacts section is more like an address book, with details from contacts
+you have (usualy through spam report). Every email address you report abuse,
+gets stored here, in order to help you keep track of whats going on. 
+
+You can add, delete, modify contacts. The raw whois data is also stored there
+to help you identify records. Currently this option is not implemented.

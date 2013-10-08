@@ -1,0 +1,10 @@
+These are examples of traps. 
+
+complex-example.php
+This is an example of a complex trap. This trap requires the honeypot
+to be hosted alone in its own domain.
+
+simple-example.php
+This is a simple example that demostrates how you can use
+basted into your existing PHP scripts.
+

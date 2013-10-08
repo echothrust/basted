@@ -1,0 +1,3 @@
+Communications section helps you see the reports you've done
+followups you have received etc. This section will basicaly give you 
+an idea of what is going on.

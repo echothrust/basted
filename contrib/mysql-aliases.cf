@@ -1,0 +1,24 @@
+# BASTEDv0.2 Postfix MySQL configuration.
+# edit your main.cf and add or change the following line
+# virtual_alias_maps=mysql:/etc/postfix/mysql-aliases.cf
+
+user = DBUSER
+password = DBPASS
+hosts = DBHOST
+
+# The database name on the servers.
+dbname = DBNAME
+
+# You may specify additional_conditions.
+# if you want for example to receive only 1 spam per trap uncomment
+# the following
+# additional_conditions = and status = 'Active'
+
+# DONT CHANGE ANYTHING BELOW THIS LINE
+
+# The table name.
+table = generated
+
+# Query components, see below.
+select_field = alias
+where_field = genmail

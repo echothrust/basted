@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+@media print {
+	body {
+		padding-top: 1in;
+		padding-bottom: 1in;
+		padding-left: 1in;
+		padding-right: 1in;
+	}
+}
+body {
+	text-indent: 0in;
+	text-align: left;
+	lang: en-US;
+	text-decoration: none;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	font-size: 12pt;
+	font-style: normal;
+	widows: 2;
+	font-family: 'Times New Roman';
+}
+table {
+	width: 100%;
+}
+td {
+	border-collapse: collapse;
+	text-align: left;
+	vertical-align: top;
+}
+p, h1, h2, h3, li {
+	color: #000000;
+	font-family: 'Times New Roman';
+	font-size: 12pt;
+	lang: en-US;
+	text-align: left;
+	vertical-align: normal;
+}
+h1 {
+	font-family: 'Bitstream Vera Sans';
+	font-size: 17pt;
+	font-weight: bold;
+	margin-bottom: 3pt;
+	margin-top: 22pt;
+}
+*.Numbered_Heading_1 {
+	font-weight: bold;
+}

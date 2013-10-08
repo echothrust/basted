@@ -1,0 +1,166 @@
+INTALLATION OF BASTED WITH CATCHALL ALIAS FOR POSTFIX
+-----------------------------------------------------
+FIRST read the README FILE.
+
+Well although the actual BASTED installation consists of 2 simple steps,
+we will try to include here some sample configurations and guidlines
+that will help you prepare your system for a successfull BASTED
+installation.
+
+Requirements
+
+The following programs are required in order to have a fully functional
+BASTED system.
+
+    * MySQL http://www.mysql.com/ 
+    * Apache http://httpd.apache.org/ 
+    * PHP http://www.php.net/ 
+    * PEAR Net_Whois http://pear.php.net/ 
+    * Perl http://www.cpan.org/
+    * Perl Mail::Box::Manager module http://search.cpan.org/
+    * Perl Mail::Box::Maildir module http://search.cpan.org/
+    * Perl MIME::Type module http://search.cpan.org/
+    * Perl DBI module http://search.cpan.org/
+    * Postix and Maildir support http://postfix.org/
+
+These packages are all required but if you feel like changing something
+please let us know. We will try to make this list smaller in order to
+make BASTED as independed as possible, but you dont have to wait for us
+to do all the work :-)
+
+BASTED Install
+
+After you have succesfuly downloaded the tarball containing the files
+simply untar and place them inside your htdocs directory (or homepage or
+whatever).
+
+$ cd ~/public_html (or /var/www/htdocs) 
+$ tar -zxf basted-v0.2.tar.gz
+
+This should create a directory named basted-v0.2. Change your working
+directory to basted-v0.2, in order to create a database for your records
+and insert the structure of tables.
+
+$ mysqladmin -u user -p basted 
+$ mysql -u user -p basted < contrib/basted.mysql
+
+Edit the file admin/config.php and change the values to what seems
+appropriate for your system. An explanation of each value there follows.
+
+$dbhost="localhost"; (Host running mysql) 
+$dbuser="user";      (User to connect to the database)
+$dbpass="password";  (Password of that user) 
+$dbname="basted";    (This is the name of the database you created earlier)
+
+$domain="spamhost.yourdomain.org"; (This is the maildomain basted runs
+on and accepts mails) 
+
+$ORGANISATION="team r00thell"; (Your organizations name if none simply leave empty) 
+$MAIL="user@domain.org"; (Email abuse reports will have as FROM) 
+$MAILFROM="yourname <$MAIL>"; (Only change yourname part if not required simply remove) 
+$SUBJECT="**Notification about SPAMMER activity from your network**"; 
+(Default subject please note that this subject line gets prepended by the id of spam
+ [ID:10] for example)
+
+After you finished editing your config you should be able to make it
+work. But first, you need to fix some values in the perl script that
+comes with basted. This script is responsible for placing the spam mails
+in your database. Edit contrib/basted2sql.pl and change the following.
+
+my $HOST        = "localhost"; (same as config.php) 
+my $DATABASE    = "basted";    (same as config.php) 
+my $USERNAME    = "user";      (same as config.php) 
+my $PASSWORD    = "password";  (same as config.php) 
+my $BASEDIR     = "/path/to/your/Maildir"; 
+(Needs full path to Maildir. for example /home/user/Maildir)
+
+If you cant afford to have multiple mailboxes and you simply configured
+your filter or mail client to move those spam mails to a folder simply
+add the folder at the end of Maildir (variable $BASEDIR). Here is an
+example.
+
+my $BASEDIR = "/home/user/Maildir/.SPAM";
+
+Place a cronjob so that you can insert those mails automaticaly. A line
+like the following should be efficient for almost all unix systems with
+a descent crond.
+
+1,6,11,16,21,26,31,36,41,46,51,56 * * * * /path/to/basted2sql.pl 1>/dev/null 2>/dev/null
+
+Alternatively, the perl script can also be ran manually, whenever you
+want to update your database. Of course, this is not a versatile
+solution, because you will have to run the script every now and then,
+but it might appear usefull to someone who doesnt want processes running
+everynow and then (maybe on a _very_ slow system?)
+
+Sample Postfix Configuration
+
+Although your postfix configuration is not part of basted we will
+include a sample entry without putting our hands on fire about how good
+or bad that is. You should be warned though. If a spamer figures out you
+are using wildchard matching for a domain he'll bomb you to death. But
+fear not, cause next version of BASTED will come with more features that
+will help BASTED work together with your postfix in order to avoid this
+havoc.
+
+The lines we changed in order to make our postfix accept delivery for
+our BASTED system are the following
+
+home_mailbox = Maildir/ 
+mydestination= basted.system.domain.com 
+(If multiple domains are served seperate them with coma)
+virtual_alias_maps=hash:/etc/postfix/basted-maps
+
+NOTE: Please read your postfix documentation about changing these
+otherwise you might cause some serious problems to your system.
+
+The basted-maps file should look like this.
+
+@basted.system.domain.com username 
+(this is the username receiving all spam)
+
+After you finished this simply run
+
+# postmap hash:/etc/postfix/basted-maps 
+# postfix reload
+
+Test that everything works fine by sending a test mail to
+blah@basted.system.domain.com and see your logs for any errors. And
+thats pretty much all you need. If further instructions are required
+please make sure you read the documentation that came allong with your
+postfix or visit postfix.org for further instructions.
+
+NOTES
+
+Last but not least, you should be carefull with your admin folder. Since
+you dont want spammers or anyone else messing with your BASTED system,
+it is strongly advised that you use some basic protection to this
+folder. If you have a static IP and you dont care about making the
+folder authenticated you can simply create a .htaccess file inside the
+admin folder that looks like this.
+
+Deny From ALL 
+Allow From YOUR.IP.ADDRESS
+
+On the other hand since not everyone has the luxury of static IP you
+could do something like this to enable authenticated logins to /admin/
+
+$ cat >.htaccess 
+AuthType Basic 
+AuthName "Username and Pass"
+AuthUserFile /path/to/your/.htpassword-file 
+Require valid-user 
+^D (This is CTRL+D) 
+
+$ htpasswd -mc /path/to/your/.htpassword-file username 
+New password:           (password will not be echoed back) 
+Re-type new password:
+
+
+The End
+
+That's all we could think you might need in order to configure your
+BASTED system. We know this doc is not much, but we will try to improve
+as we go. In the meantime, if you have problems configuring/running
+BASTED, you could forward your questions to tr\at/r00thell.org and we
+will try our best to help you solve your problem.
